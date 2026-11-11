@@ -241,29 +241,6 @@
   }
 
   /* ---------------- Типы шагов ---------------- */
-  // Режем команду на куски: по словам, длинные слова — на части по 4–12 символов.
-  function chunksOf(text) {
-    var t = CFG.typing || {};
-    var size = t.chunk || [4, 12];
-    var out = [];
-    text.split(/(?<= )/).forEach(function (word) {
-      while (word.length > size[1]) {
-        var n = R.int(size[0], size[1]);
-        out.push(word.slice(0, n));
-        word = word.slice(n);
-      }
-      if (word) out.push(word);
-    });
-    // иногда склеиваем соседние короткие куски, чтобы ритм был неровным
-    for (var i = out.length - 1; i > 0; i--) {
-      if (out[i].length + out[i - 1].length <= size[1] && R.chance(0.45)) {
-        out[i - 1] += out[i];
-        out.splice(i, 1);
-      }
-    }
-    return out;
-  }
-
   var STEPS = {
     phase: async function (s) {
       if (s.mode) setMode(s.mode);
@@ -280,14 +257,11 @@
       var span = document.createElement('span');
       span.className = classes(s.textCls || 'white');
       ct.appendChild(span);
-      var t = CFG.typing || {};
-      await sleep(R.range(s.pre, 150, 400));
-      var parts = chunksOf(expand(s.text));
-      for (var i = 0; i < parts.length; i++) {
-        span.textContent += parts[i];
-        if (i < parts.length - 1) await sleep(R.range(t.delay, 40, 110));
-      }
-      await sleep(R.range(s.post, 120, 300));
+      // команда вставляется целиком, как Ctrl+V
+      await sleep(R.range(s.pre, 250, 600));
+      span.textContent = expand(s.text);
+      scrollDown();
+      await sleep(R.range(s.post, 200, 450));
     },
 
     out: async function (s) {
