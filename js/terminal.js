@@ -113,10 +113,12 @@
   var paused = false;
   var ABORT = { abort: true };
 
-  function sleep(ms) {
+  // CFG.speed — множитель всех пауз сценария (меньше = быстрее). realTime=true — без множителя (таймер).
+  var SPEED = CFG.speed > 0 ? CFG.speed : 1;
+  function sleep(ms, realTime) {
     var my = token;
     return new Promise(function (resolve, reject) {
-      var left = Math.max(0, ms || 0);
+      var left = Math.max(0, (ms || 0) * (realTime ? 1 : SPEED));
       var last = performance.now();
       function tick() {
         if (my !== token) return reject(ABORT);
@@ -233,19 +235,33 @@
     }
     draw();
     countdownPromise = (async function () {
-      while (left > 0) { await sleep(100); left -= 100; draw(); }
+      while (left > 0) { await sleep(100, true); left -= 100; draw(); }
     })();
     countdownPromise.catch(function () {});
   }
 
   /* ---------------- Типы шагов ---------------- */
-  function typeDelay(ch) {
+  // Режем команду на куски: по словам, длинные слова — на части по 4–12 символов.
+  function chunksOf(text) {
     var t = CFG.typing || {};
-    var d = R.int(t.min || 30, t.max || 95);
-    if (ch === ' ') d += R.int(10, 80);
-    if (R.chance(0.18)) d = R.int(14, 32);          // быстрые «очереди»
-    if (R.chance(0.035)) d += R.int(180, 420);      // задумался
-    return d;
+    var size = t.chunk || [4, 12];
+    var out = [];
+    text.split(/(?<= )/).forEach(function (word) {
+      while (word.length > size[1]) {
+        var n = R.int(size[0], size[1]);
+        out.push(word.slice(0, n));
+        word = word.slice(n);
+      }
+      if (word) out.push(word);
+    });
+    // иногда склеиваем соседние короткие куски, чтобы ритм был неровным
+    for (var i = out.length - 1; i > 0; i--) {
+      if (out[i].length + out[i - 1].length <= size[1] && R.chance(0.45)) {
+        out[i - 1] += out[i];
+        out.splice(i, 1);
+      }
+    }
+    return out;
   }
 
   var STEPS = {
@@ -264,20 +280,14 @@
       var span = document.createElement('span');
       span.className = classes(s.textCls || 'white');
       ct.appendChild(span);
-      await sleep(R.range(s.pre, 250, 650));
-      var text = expand(s.text);
-      for (var i = 0; i < text.length; i++) {
-        // изредка — опечатка с исправлением
-        if (text[i] !== ' ' && R.chance(0.018)) {
-          span.textContent += R.pick('asdfjkl;qweruio'.split(''));
-          await sleep(R.int(90, 200));
-          span.textContent = span.textContent.slice(0, -1);
-          await sleep(R.int(60, 140));
-        }
-        span.textContent += text[i];
-        await sleep(typeDelay(text[i]));
+      var t = CFG.typing || {};
+      await sleep(R.range(s.pre, 150, 400));
+      var parts = chunksOf(expand(s.text));
+      for (var i = 0; i < parts.length; i++) {
+        span.textContent += parts[i];
+        if (i < parts.length - 1) await sleep(R.range(t.delay, 40, 110));
       }
-      await sleep(R.range(s.post, 180, 450));
+      await sleep(R.range(s.post, 120, 300));
     },
 
     out: async function (s) {

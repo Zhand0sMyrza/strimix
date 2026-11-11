@@ -11,7 +11,7 @@
 
    Типы шагов:
      { type:'phase', id:1, mode:'normal'|'alert', prompt:'local'|'root' }  — метка фазы (клавиши 1–5)
-     { type:'cmd', text:'…' }                    — посимвольный набор команды после промпта
+     { type:'cmd', text:'…' }                    — команда после промпта, вставляется кусками
      { type:'out', lines:[…], cls:'red', delay:[min,max] } — вывод блоком
      { type:'wait', ms:1000 }                     — пауза (ms можно [min,max])
      { type:'progress', label:'…', duration:3000, done:'…' }
@@ -30,7 +30,8 @@
 
 window.TERMINAL_CONFIG = {
   startDelay: 700,
-  typing: { min: 32, max: 100 },
+  speed: 0.6,                              // множитель всех пауз: 1 — исходный темп, меньше — быстрее
+  typing: { chunk: [4, 12], delay: [40, 110] }, // команды вставляются кусками по 4–12 символов
   vars: {
     target: '{ip}',
     gw: '{ip}',
@@ -223,7 +224,7 @@ window.TERMINAL_SCRIPT = [
     'wallet_backup.dat  → seed: ●●●●● ●●●●● ●●●●● ●●●●● ●●●●● ●●●●●'
   ], done: '[+] Расшифровка завершена: 5/5' },
   { type: 'wait', ms: 800 },
-  { type: 'countdown', seconds: 42, label: 'ОТПРАВКА ДАННЫХ' },
+  { type: 'countdown', seconds: 20, label: 'ОТПРАВКА ДАННЫХ' },
   { type: 'glitch', ms: 500, strong: true },
   { type: 'banner', text: 'UPLOADING DATA…', ms: 2600, wait: true },
   { type: 'cmd', text: 'upload --all --to {$relay3} --wipe-traces' },
