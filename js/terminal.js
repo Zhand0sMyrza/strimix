@@ -420,8 +420,8 @@
       var body = $popup.querySelector('.pp-body');
       body.textContent = '';
       (s.lines || []).forEach(function (l) { var d = document.createElement('div'); renderInline(d, expand(l)); body.appendChild(d); });
-      $popup.style.left = R.int(30, 58) + '%';
-      $popup.style.top = R.int(22, 48) + '%';
+      $popup.style.left = (s.left != null ? s.left : R.int(30, 58)) + '%';
+      $popup.style.top = (s.top != null ? s.top : R.int(22, 48)) + '%';
       $popup.classList.remove('show'); void $popup.offsetWidth; $popup.classList.add('show');
       var ms = s.ms || 2000;
       spawn(function () { return sleep(ms).then(function () { $popup.classList.remove('show'); }); });

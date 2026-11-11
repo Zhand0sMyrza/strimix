@@ -163,3 +163,10 @@ body.glitching.strong #screen { animation: glitchShiftStrong .1s steps(2) infini
 .pp-btn { margin: 8px 16px 14px auto; width: 72px; text-align: center; border: 1px solid #555; padding: 3px 0; color: #888; }
 @keyframes ppIn { from { transform: translate(-50%, -50%) scale(1.15); opacity: 0; } }
 @keyframes ppJitter { 50% { transform: translate(calc(-50% + 2px), calc(-50% - 1px)); filter: hue-rotate(40deg) contrast(1.3); } }
+
+/* ---------- Крупные акцентные строки ---------- */
+.c-big { display: inline-block; font-size: 1.9em; line-height: 1.25; font-weight: 800; letter-spacing: .01em; margin: .15em 0; }
+.c-hl  { display: inline-block; padding: .05em .45em; background: rgba(255, 40, 40, .16); outline: 2px solid var(--red); box-shadow: 0 0 28px rgba(255, 0, 0, .45); }
+.c-hlg { display: inline-block; padding: .05em .45em; background: rgba(57, 255, 106, .12); outline: 2px solid var(--green); box-shadow: 0 0 28px rgba(57, 255, 106, .35); }
+.c-flash { animation: flashIn .9s steps(2) 3; }
+@keyframes flashIn { 50% { opacity: .15; } }
