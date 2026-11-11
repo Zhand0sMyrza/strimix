@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strimix — аукционы, донаты и оверлеи для стримеров</title>
+  <meta name="description" content="Strimix — расширение для стримеров: аукционы, донаты с комиссией 1%, голосования, оверлеи для OBS и аналитика.">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%239146FF'/%3E%3Cpath d='M5 17h5l3-7 4 12 3-8 2 3h5' fill='none' stroke='white' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="site-header">
+    <div class="container">
+      <a href="#top" class="logo" aria-label="Strimix">
+        <span class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h4l2.2-5.5L13 18l2.3-6 1.7 2.5H21" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        Strimix
+      </a>
+      <nav class="nav" aria-label="Основное меню">
+        <a href="#features">Возможности</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- Герой -->
+    <section class="hero">
+      <div class="beam" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="container">
+        <div class="eyebrow"><b>NEW</b> Аукционы баллами канала уже доступны</div>
+        <h1><span>Стримь больше.</span><span class="grad">Зарабатывай больше.</span></h1>
+        <p class="hero-sub">Аукционы, донаты и оверлеи для Twitch — в одном расширении.</p>
+        <a class="btn btn-lg" href="auth.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Войти через Twitch
+        </a>
+
+        <div class="pills-wrap">
+          <div class="pills" role="tablist" aria-label="Режимы панели">
+            <span class="pill-indicator" aria-hidden="true"></span>
+            <button class="pill active" role="tab" aria-selected="true" data-tab="auction">Аукционы</button>
+            <button class="pill" role="tab" aria-selected="false" data-tab="donations">Донаты</button>
+            <button class="pill" role="tab" aria-selected="false" data-tab="activities">Активности</button>
+          </div>
+        </div>
+
+        <!-- Витрина панели -->
+        <div class="showcase">
+          <div class="window-bar">
+            <i></i><i></i><i></i>
+            <span>Strimix · Панель стримера</span>
+            <em class="live">LIVE</em>
+          </div>
+          <div class="dash">
+            <aside class="dash-side" aria-hidden="true">
+              <div class="side-item active" data-side="auction"><i></i>Аукционы</div>
+              <div class="side-item" data-side="donations"><i></i>Донаты</div>
+              <div class="side-item" data-side="activities"><i></i>Активности</div>
+              <div class="side-item"><i></i>Оверлеи</div>
+              <div class="side-item"><i></i>Аналитика</div>
+            </aside>
+            <div class="dash-main">
+
+              <div class="tab-panel active" data-panel="auction">
+                <div class="dash-head">
+                  <div><h3>Что смотрим сегодня?</h3><p>Ставки баллами канала · обновляется в реальном времени</p></div>
+                  <span class="timer" data-timer="754">12:34</span>
+                </div>
+                <div class="cols">
+                  <div class="lots" data-widget="auction" data-limit="5"></div>
+                  <div class="card">
+                    <div class="card-title">Последние ставки <span class="tag">баллы канала</span></div>
+                    <div class="bids" data-widget="bids"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-panel" data-panel="donations">
+                <div class="dash-head">
+                  <div><h3>Донаты за стрим</h3><p>Комиссия 1% · вывод на карту</p></div>
+                  <span class="tag ok">Алерты в OBS подключены</span>
+                </div>
+                <div class="cols-3" style="margin-bottom:16px">
+                  <div class="card"><div class="kpi">18 420 ₽<span class="up">+24%</span><small>за этот стрим</small></div></div>
+                  <div class="card"><div class="kpi">64<small>доната</small></div></div>
+                  <div class="card"><div class="kpi">1%<small>комиссия сервиса</small></div></div>
+                </div>
+                <div class="donations" data-widget="donations" data-limit="3"></div>
+              </div>
+
+              <div class="tab-panel" data-panel="activities">
+                <div class="dash-head">
+                  <div><h3>Активности</h3><p>Голосования, предсказания, цели и счётчики</p></div>
+                  <span class="tag">3 активных</span>
+                </div>
+                <div class="cols">
+                  <div class="card" data-widget="poll">
+                    <div class="poll-q">Какой босс следующий?</div>
+                    <div class="poll-opt lead" style="--p:46%"><span>Малления</span><b>46%</b></div>
+                    <div class="poll-opt" style="--p:31%"><span>Радан</span><b>31%</b></div>
+                    <div class="poll-opt" style="--p:23%"><span>Реннала</span><b>23%</b></div>
+                    <div class="poll-foot">1 284 голоса · осталось 0:42</div>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:16px">
+                    <div class="card">
+                      <div class="card-title">Цель стрима</div>
+                      <div class="goal-label"><span>Новый микрофон</span><b data-goal-text>34 500 / 50 000 ₽</b></div>
+                      <div class="goal-bar"><div class="goal-fill" data-goal style="--g:69%"></div></div>
+                    </div>
+                    <div class="card">
+                      <div class="card-title">Счётчик</div>
+                      <div class="counter" data-widget="counter">
+                        <div><div class="counter-val">17</div><div class="poll-foot">смертей за стрим</div></div>
+                        <div class="counter-btns"><button type="button" data-step="-1" aria-label="Минус">−</button><button type="button" data-step="1" aria-label="Плюс">+</button></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Возможности -->
+    <div id="features">
+
+      <!-- 1. Аукционы -->
+      <section class="feature">
+        <div class="container">
+          <div class="feature-text reveal">
+            <div class="feature-num">01 — АУКЦИОНЫ</div>
+            <h2 class="feature-title c1">Аукционы фильмов и&nbsp;игр</h2>
+            <p>Зрители сами решают, что вы смотрите или во что играете дальше. Ставки делаются баллами канала, а топ лотов пересчитывается в реальном времени прямо на экране.</p>
+            <div class="chips"><span class="chip">Баллы канала</span><span class="chip">Топ ставок live</span><span class="chip">Таймер и автопродление</span></div>
+          </div>
+          <div class="panel reveal" style="--d:.15s">
+            <div class="panel-head"><h4>Аукцион: вечерний фильм</h4><span class="timer" data-timer="221">03:41</span></div>
+            <div class="lots" data-widget="auction" data-limit="6"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Донаты -->
+      <section class="feature reverse">
+        <div class="container">
+          <div class="feature-text reveal">
+            <div class="feature-num">02 — ДОНАТЫ</div>
+            <h2 class="feature-title c2">Донаты с&nbsp;комиссией 1%</h2>
+            <p>Принимайте поддержку от зрителей и выводите деньги на карту. Каждый донат мгновенно превращается в красивый алерт в OBS — с текстом, звуком и анимацией.</p>
+            <div class="chips"><span class="chip">1% комиссия</span><span class="chip">Вывод на карту</span><span class="chip">Алерты в OBS</span></div>
+          </div>
+          <div class="panel reveal" style="--d:.15s">
+            <div class="alert-preview" data-alert>
+              <div class="alert-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="#fff"/></svg></div>
+              <strong><em data-alert-nick>kotik_pro</em> — <span data-alert-sum>500 ₽</span></strong>
+              <p data-alert-msg>«На новый микрофон 🎤»</p>
+            </div>
+            <div class="card-title" style="margin:22px 0 12px">Лента донатов <span class="tag ok">вывод: 1–2 дня</span></div>
+            <div class="donations" data-widget="donations" data-limit="4" data-alert-target="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Активности -->
+      <section class="feature">
+        <div class="container">
+          <div class="feature-text reveal">
+            <div class="feature-num">03 — АКТИВНОСТИ</div>
+            <h2 class="feature-title c3">Голосования, предсказания и&nbsp;цели</h2>
+            <p>Вовлекайте чат: запускайте голосования и предсказания за секунды, ставьте цели стрима и ведите счётчики — всё обновляется у зрителей мгновенно.</p>
+            <div class="chips"><span class="chip">Голосования</span><span class="chip">Предсказания</span><span class="chip">Goals</span><span class="chip">Счётчики</span></div>
+          </div>
+          <div class="panel reveal" style="--d:.15s">
+            <div class="cols" style="grid-template-columns:1fr 1fr">
+              <div class="card" data-widget="poll">
+                <div class="poll-q">Что делаем в пятницу?</div>
+                <div class="poll-opt lead" style="--p:52%"><span>Хоррор-ночь</span><b>52%</b></div>
+                <div class="poll-opt" style="--p:29%"><span>Спидран</span><b>29%</b></div>
+                <div class="poll-opt" style="--p:19%"><span>Кино с чатом</span><b>19%</b></div>
+                <div class="poll-foot">2 031 голос</div>
+              </div>
+              <div class="card">
+                <div class="card-title">Предсказание</div>
+                <div class="poll-q" style="font-size:15px">Пройдёт с первой попытки?</div>
+                <div class="pred">
+                  <div class="pred-side a"><strong>64%</strong><span>Да · 182к</span></div>
+                  <div class="pred-side b"><strong>36%</strong><span>Нет · 103к</span></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-title">Цель стрима</div>
+                <div class="goal-label"><span>Новая камера</span><b data-goal-text>41 200 / 60 000 ₽</b></div>
+                <div class="goal-bar"><div class="goal-fill" data-goal style="--g:68%"></div></div>
+              </div>
+              <div class="card">
+                <div class="card-title">Счётчик</div>
+                <div class="counter" data-widget="counter">
+                  <div><div class="counter-val">42</div><div class="poll-foot">«ой всё»</div></div>
+                  <div class="counter-btns"><button type="button" data-step="-1" aria-label="Минус">−</button><button type="button" data-step="1" aria-label="Плюс">+</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Оверлеи -->
+      <section class="feature reverse">
+        <div class="container">
+          <div class="feature-text reveal">
+            <div class="feature-num">04 — ОВЕРЛЕИ</div>
+            <h2 class="feature-title c1">Оверлеи для OBS в&nbsp;один клик</h2>
+            <p>Готовые виджеты для алертов, целей, голосований и аукционов. Включите нужный — и он сразу появится в сцене. Никаких ручных настроек браузерных источников.</p>
+            <div class="chips"><span class="chip">OBS Studio</span><span class="chip">Streamlabs</span><span class="chip">Свои темы</span></div>
+          </div>
+          <div class="panel reveal" style="--d:.15s">
+            <div class="scene">
+              <div class="ov ov-alert" data-ov="alert"><em>vasya_gg</em> задонатил 300 ₽</div>
+              <div class="ov ov-poll" data-ov="poll">Какой босс следующий?<div></div><div></div></div>
+              <div class="ov ov-goal" data-ov="goal">Новый микрофон · 69%<div class="goal-bar"><div class="goal-fill" style="--g:69%"></div></div></div>
+              <div class="ov ov-cam off" data-ov="cam"></div>
+            </div>
+            <div class="ov-list">
+              <div class="ov-item"><span>Алерты донатов<small>alert.v3</small></span><button class="toggle" type="button" aria-pressed="true" aria-label="Алерты донатов" data-ov-toggle="alert"></button></div>
+              <div class="ov-item"><span>Голосование<small>poll.v2</small></span><button class="toggle" type="button" aria-pressed="true" aria-label="Голосование" data-ov-toggle="poll"></button></div>
+              <div class="ov-item"><span>Цель стрима<small>goal.v2</small></span><button class="toggle" type="button" aria-pressed="true" aria-label="Цель стрима" data-ov-toggle="goal"></button></div>
+              <div class="ov-item"><span>Рамка камеры<small>frame.v1</small></span><button class="toggle" type="button" aria-pressed="false" aria-label="Рамка камеры" data-ov-toggle="cam"></button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Аналитика -->
+      <section class="feature">
+        <div class="container">
+          <div class="feature-text reveal">
+            <div class="feature-num">05 — АНАЛИТИКА</div>
+            <h2 class="feature-title c2">Аналитика каждого эфира</h2>
+            <p>Пики зрителей, удержание и доход за стрим — на одном графике. Смотрите, какие моменты зашли лучше всего, и планируйте следующий эфир на основе цифр.</p>
+            <div class="chips"><span class="chip">Пики зрителей</span><span class="chip">Удержание</span><span class="chip">Доход за стрим</span></div>
+          </div>
+          <div class="panel reveal" style="--d:.15s">
+            <div class="cols-3" style="margin-bottom:22px">
+              <div class="card"><div class="kpi">1 284<small>пик зрителей</small></div></div>
+              <div class="card"><div class="kpi">63%<span class="up">+8%</span><small>удержание</small></div></div>
+              <div class="card"><div class="kpi">18 420 ₽<small>доход за стрим</small></div></div>
+            </div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-title">Зрители за эфир <span class="tag">4 ч 12 мин</span></div>
+              <svg class="chart" viewBox="0 0 600 200" data-widget="chart" aria-label="График зрителей">
+                <defs>
+                  <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#9146FF" stop-opacity=".55"/>
+                    <stop offset="1" stop-color="#9146FF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <line class="grid-l" x1="0" x2="600" y1="40" y2="40"/>
+                <line class="grid-l" x1="0" x2="600" y1="100" y2="100"/>
+                <line class="grid-l" x1="0" x2="600" y1="160" y2="160"/>
+              </svg>
+            </div>
+            <div class="card">
+              <div class="card-title">Доход по часам</div>
+              <div class="bars">
+                <span style="--h:34%"></span><span style="--h:52%;animation-delay:.05s"></span><span style="--h:41%;animation-delay:.1s"></span><span style="--h:78%;animation-delay:.15s"></span><span style="--h:96%;animation-delay:.2s"></span><span style="--h:63%;animation-delay:.25s"></span><span style="--h:70%;animation-delay:.3s"></span><span style="--h:48%;animation-delay:.35s"></span><span style="--h:85%;animation-delay:.4s"></span><span style="--h:57%;animation-delay:.45s"></span><span style="--h:39%;animation-delay:.5s"></span><span style="--h:66%;animation-delay:.55s"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Цифры -->
+    <section class="stats-section">
+      <div class="container stats">
+        <div class="reveal"><div class="stat-num grad" data-count="12000" data-suffix="+">12 000+</div><div class="stat-label">стримеров уже с нами</div></div>
+        <div class="reveal" style="--d:.1s"><div class="stat-num grad" data-count="1" data-suffix="%">1%</div><div class="stat-label">комиссия на донаты</div></div>
+        <div class="reveal" style="--d:.2s"><div class="stat-num grad" data-count="0" data-suffix=" ₽">0 ₽</div><div class="stat-label">за подключение</div></div>
+      </div>
+    </section>
+
+    <!-- Тарифы -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Простые тарифы</h2>
+          <p>Без абонентской платы. Платите только процент с донатов.</p>
+        </div>
+        <div class="plans">
+          <div class="plan reveal">
+            <h3>Старт</h3>
+            <div class="price">0 ₽ <small>/ месяц</small></div>
+            <ul><li>Аукционы баллами канала</li><li>Голосования и счётчики</li><li>3 оверлея для OBS</li></ul>
+          </div>
+          <div class="plan featured reveal" style="--d:.1s">
+            <h3>Донаты</h3>
+            <div class="price">1% <small>с доната</small></div>
+            <ul><li>Всё из тарифа «Старт»</li><li>Приём донатов и вывод на карту</li><li>Алерты с озвучкой</li><li>Цели стрима</li></ul>
+          </div>
+          <div class="plan reveal" style="--d:.2s">
+            <h3>Студия</h3>
+            <div class="price">0 ₽ <small>+ 1%</small></div>
+            <ul><li>Расширенная аналитика</li><li>Свои темы оверлеев</li><li>Доступ для модераторов</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq" style="padding-top:0">
+      <div class="container">
+        <div class="section-head reveal"><h2>Частые вопросы</h2></div>
+        <div class="faq reveal">
+          <details><summary>Сколько стоит подключение?</summary><p>Подключение бесплатное. Комиссия 1% берётся только с полученных донатов.</p></details>
+          <details><summary>Как работают аукционы?</summary><p>Зрители делают ставки баллами канала на фильмы, игры или любые ваши лоты. Побеждает лот с наибольшей суммой к концу таймера.</p></details>
+          <details><summary>Как добавить оверлей в OBS?</summary><p>Включите нужный виджет в панели — Strimix сам добавит источник в выбранную сцену.</p></details>
+          <details><summary>Это официальный продукт Twitch?</summary><p>Нет. Strimix — независимое расширение и не связано с Twitch Interactive, Inc.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Финальный CTA -->
+    <section class="cta">
+      <div class="beam" aria-hidden="true"></div>
+      <div class="container reveal">
+        <h2>Подключись за&nbsp;30&nbsp;секунд</h2>
+        <p>Без установки. Без абонентской платы.</p>
+        <a class="btn btn-lg" href="auth.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12h10M10 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Войти через Twitch
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span class="logo"><span class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h4l2.2-5.5L13 18l2.3-6 1.7 2.5H21" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Strimix</span>
+      <div class="foot-links"><a href="#features">Возможности</a><a href="#pricing">Тарифы</a><a href="#faq">FAQ</a></div>
+      <span>© 2026 Strimix. Не является продуктом Twitch Interactive, Inc.</span>
+    </div>
+  </footer>
+
+  <script src="js/landing.js"></script>
+</body>
+</html>

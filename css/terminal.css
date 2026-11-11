@@ -1,0 +1,148 @@
+/* Терминал «взлома». Чисто визуальный эффект. */
+:root {
+  --green: #39FF6A;
+  --green-dim: #1E9A44;
+  --white: #E8E8E8;
+  --red: #FF3B3B;
+  --amber: #FFB020;
+  --cyan: #4FD8FF;
+  --purple: #BF94FF;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --fs: clamp(12px, 0.98vw, 19px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: #000; overflow: hidden; cursor: none; }
+body { color: var(--green); font-family: var(--mono); }
+
+#screen {
+  position: fixed; inset: 0;
+  padding: 2.2vh 2.4vw;
+  overflow: hidden;
+  font-size: var(--fs);
+  line-height: 1.42;
+  text-shadow: 0 0 5px rgba(57, 255, 106, .45);
+  animation: crtFlicker 6s infinite;
+}
+#output { white-space: pre-wrap; word-break: break-word; }
+.line { min-height: 1.42em; }
+
+/* цвета */
+.c-green  { color: var(--green); }
+.c-dim    { color: var(--green-dim); text-shadow: none; }
+.c-white  { color: var(--white); text-shadow: 0 0 5px rgba(255, 255, 255, .3); }
+.c-gray   { color: #8A8A8A; text-shadow: none; }
+.c-red    { color: var(--red); text-shadow: 0 0 8px rgba(255, 59, 59, .65); }
+.c-amber  { color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 32, .5); }
+.c-cyan   { color: var(--cyan); text-shadow: 0 0 6px rgba(79, 216, 255, .45); }
+.c-purple { color: var(--purple); text-shadow: 0 0 6px rgba(191, 148, 255, .45); }
+.c-bold   { font-weight: 700; }
+.c-blink  { animation: blinkTxt .7s steps(1) infinite; }
+.c-inv    { background: var(--red); color: #000; text-shadow: none; padding: 0 .3em; }
+
+.cursor {
+  display: inline-block; width: .62em; height: 1.15em; margin-left: 1px;
+  vertical-align: -0.2em; background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  animation: blinkTxt 1s steps(1) infinite;
+}
+@keyframes blinkTxt { 50% { opacity: 0; } }
+
+/* ---------- CRT-эффекты ---------- */
+.fx-scanlines, .fx-vignette, .fx-scanbar, .fx-tint { position: fixed; inset: 0; pointer-events: none; }
+.fx-scanlines {
+  z-index: 20;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,0) 0, rgba(255,255,255,0) 2px, rgba(0,0,0,.32) 3px, rgba(0,0,0,0) 4px);
+}
+.fx-vignette {
+  z-index: 21;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 58%, rgba(0,0,0,.78) 100%);
+}
+.fx-scanbar {
+  z-index: 19; height: 22vh; top: -22vh; bottom: auto;
+  background: linear-gradient(to bottom, rgba(57,255,106,0), rgba(57,255,106,.045) 50%, rgba(57,255,106,0));
+  animation: scanbar 7s linear infinite;
+}
+@keyframes scanbar { to { transform: translateY(130vh); } }
+@keyframes crtFlicker {
+  0%, 100% { opacity: 1; }
+  48% { opacity: 1; } 49% { opacity: .94; } 50% { opacity: 1; }
+  77% { opacity: .97; } 78% { opacity: 1; }
+}
+
+/* режим тревоги */
+.fx-tint { z-index: 18; opacity: 0; background: radial-gradient(ellipse at center, rgba(255,0,0,0) 30%, rgba(255,0,0,.22) 100%); transition: opacity .6s; }
+body[data-mode="alert"] .fx-tint { opacity: 1; animation: alarm 1.6s ease-in-out infinite; }
+body[data-mode="alert"] .fx-scanbar { background: linear-gradient(to bottom, rgba(255,59,59,0), rgba(255,59,59,.06) 50%, rgba(255,59,59,0)); }
+@keyframes alarm { 50% { opacity: .35; } }
+
+/* ---------- Баннер ---------- */
+#banner { position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center; pointer-events: none; }
+#banner.show { display: flex; }
+.banner-box {
+  font: 800 clamp(36px, 6.4vw, 132px)/1 var(--mono); letter-spacing: .06em;
+  padding: .28em .7em; border: .07em solid var(--red);
+  color: #fff; background: var(--red);
+  box-shadow: 0 0 120px rgba(255, 0, 0, .7), inset 0 0 40px rgba(0,0,0,.35);
+  text-shadow: 0 0 18px rgba(255,255,255,.6);
+  animation: bannerFlash .46s steps(1) infinite, bannerIn .25s ease-out;
+  white-space: nowrap;
+}
+@keyframes bannerFlash {
+  0% { background: var(--red); color: #fff; }
+  50% { background: rgba(0,0,0,.88); color: var(--red); text-shadow: 0 0 24px rgba(255,59,59,.9); }
+}
+@keyframes bannerIn { from { transform: scale(1.4); opacity: 0; } }
+
+/* ---------- Обратный отсчёт ---------- */
+#countdown {
+  position: fixed; top: 2.4vh; right: 2.4vw; z-index: 25; display: none;
+  flex-direction: column; align-items: flex-end; gap: .2em;
+  padding: .7em 1.1em; border: 2px solid var(--red); background: rgba(40, 0, 0, .72);
+  color: var(--red); text-shadow: 0 0 10px rgba(255,59,59,.8);
+  box-shadow: 0 0 40px rgba(255,0,0,.35);
+  font-size: var(--fs);
+}
+#countdown.show { display: flex; }
+.cd-label { font-size: .85em; letter-spacing: .14em; font-weight: 700; }
+.cd-time { font-size: 3.2em; font-weight: 800; line-height: 1; letter-spacing: .04em; }
+#countdown.urgent .cd-time { animation: blinkTxt .5s steps(1) infinite; }
+#countdown.urgent { animation: cdShake .18s infinite; }
+@keyframes cdShake { 25% { transform: translate(2px, -1px); } 75% { transform: translate(-2px, 1px); } }
+
+/* ---------- Финальный экран ---------- */
+#final { position: fixed; inset: 0; z-index: 28; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.82); }
+#final.show { display: flex; animation: finalIn .15s steps(2); }
+@keyframes finalIn { from { opacity: 0; } }
+.final-box { text-align: center; color: var(--red); text-shadow: 0 0 22px rgba(255,59,59,.85); }
+.final-title { font: 800 clamp(36px, 6vw, 120px)/1.05 var(--mono); letter-spacing: .04em; }
+.final-lines { margin-top: 1.4em; font-size: calc(var(--fs) * 1.25); color: var(--white); text-shadow: 0 0 6px rgba(255,255,255,.35); line-height: 1.6; }
+.final-lines .cursor { color: var(--red); }
+
+/* ---------- Глитч ---------- */
+#glitch { position: fixed; inset: 0; z-index: 26; pointer-events: none; display: none; }
+body.glitching #glitch { display: block; }
+#glitch i {
+  position: absolute; left: 0; right: 0; display: block;
+  backdrop-filter: invert(1) hue-rotate(90deg);
+  -webkit-backdrop-filter: invert(1) hue-rotate(90deg);
+}
+#glitch i.r { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255, 30, 30, .35); mix-blend-mode: screen; }
+#glitch i.c { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(60, 220, 255, .28); mix-blend-mode: screen; }
+#glitch i.k { backdrop-filter: none; -webkit-backdrop-filter: none; background: #000; }
+
+body.glitching #screen { animation: glitchShift .12s steps(2) infinite; text-shadow: 2px 0 rgba(255,0,60,.85), -2px 0 rgba(0,220,255,.85); }
+body.glitching.strong #screen { animation: glitchShiftStrong .1s steps(2) infinite; filter: contrast(1.4) saturate(1.6); }
+@keyframes glitchShift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-4px, 1px) skewX(-1deg); }
+}
+@keyframes glitchShiftStrong {
+  0% { transform: translate(6px, -2px) skewX(2deg); clip-path: inset(0 0 12% 0); }
+  50% { transform: translate(-9px, 3px) skewX(-3deg); clip-path: inset(18% 0 0 0); }
+}
+
+@media (max-width: 700px) {
+  :root { --fs: 11px; }
+  #screen { padding: 12px; }
+}
