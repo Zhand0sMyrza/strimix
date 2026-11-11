@@ -118,7 +118,7 @@ window.TERMINAL_SCRIPT = [
     '[[gray|процесс {pid} не отвечает · ты всё ещё здесь?]]'
   ] },
   { type: 'cmd', text: 'exfil --to {$relay2}:4444 --files Passwords.txt,browser_cookies.db,stream_keys.cfg', pre: 150, post: 80 },
-  { type: 'download', speed: 0.35, files: [
+  { type: 'download', speed: 0.22, files: [
     { name: 'Passwords.txt', size: '2-48K', hot: true },
     { name: 'browser_cookies.db', size: '1-6M', hot: true },
     { name: 'stream_keys.cfg', size: '200-900B', hot: true },
