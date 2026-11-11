@@ -146,3 +146,20 @@ body.glitching.strong #screen { animation: glitchShiftStrong .1s steps(2) infini
   :root { --fs: 11px; }
   #screen { padding: 12px; }
 }
+
+/* ---------- Всплывающее окошко ---------- */
+#popup {
+  position: fixed; z-index: 27; display: none; width: min(460px, 86vw);
+  transform: translate(-50%, -50%);
+  background: #121214; border: 1px solid #ff3b3b; box-shadow: 0 0 0 1px #000, 0 20px 60px rgba(0,0,0,.8), 0 0 40px rgba(255,0,0,.35);
+  font: 400 calc(var(--fs) * .95)/1.45 var(--mono); color: var(--white); text-shadow: none;
+}
+#popup.show { display: block; animation: ppIn .12s steps(2), ppJitter .16s steps(2) .12s infinite; }
+.pp-bar { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: #ff3b3b; color: #000; font-weight: 700; }
+.pp-bar .pp-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pp-bar i { width: 10px; height: 10px; border: 2px solid #000; }
+.pp-body { padding: 16px 16px 8px; }
+.pp-body div + div { margin-top: 4px; }
+.pp-btn { margin: 8px 16px 14px auto; width: 72px; text-align: center; border: 1px solid #555; padding: 3px 0; color: #888; }
+@keyframes ppIn { from { transform: translate(-50%, -50%) scale(1.15); opacity: 0; } }
+@keyframes ppJitter { 50% { transform: translate(calc(-50% + 2px), calc(-50% - 1px)); filter: hue-rotate(40deg) contrast(1.3); } }

@@ -25,6 +25,7 @@
   var $cdTime = $cd.querySelector('.cd-time');
   var $final = document.getElementById('final');
   var $glitch = document.getElementById('glitch');
+  var $popup = document.getElementById('popup');
 
   /* ---------------- Случайности ---------------- */
   var R = {
@@ -70,6 +71,9 @@
       var mult = { B: 1, K: 1024, M: 1048576, G: 1073741824 }[(m[3] || 'K').toUpperCase()];
       return Math.round(R.float(+m[1], +m[2]) * mult);
     },
+    alnum: function (n) { var c = 'abcdefghijklmnopqrstuvwxyz0123456789', s = ''; for (var i = 0; i < n; i++) s += c[Math.random() * c.length | 0]; return s; },
+    // «номер кошелька»: 3 группы букв/цифр через «_», напр. s7d7fhshf8sh_sd8f9jsd8ufjsdf_s9udfjsjf
+    wallet: function () { return [GEN.alnum(R.int(10, 13)), GEN.alnum(R.int(11, 14)), GEN.alnum(R.int(8, 11))].join('_'); },
     speed: function () { return R.float(1.8, 98).toFixed(1) + ' MB/s'; },
     time: function () {
       var d = new Date(Date.now() + timeOffset);
@@ -96,6 +100,8 @@
         case 'ip': return GEN.ip();
         case 'mac': return GEN.mac();
         case 'hash': case 'hex': return R.hex(+num || 32);
+        case 'alnum': return GEN.alnum(+num || 16);
+        case 'wallet': return GEN.wallet();
         case 'port': return R.int(1024, 65535);
         case 'pid': return R.int(300, 65000);
         case 'time': return GEN.time();
@@ -408,6 +414,42 @@
       else spawn(function () { return glitch(s.ms, s.strong); });
     },
 
+    // всплывающее окошко с непонятной надписью (не блокирует сценарий)
+    popup: async function (s) {
+      $popup.querySelector('.pp-title').textContent = expand(s.title || 'system');
+      var body = $popup.querySelector('.pp-body');
+      body.textContent = '';
+      (s.lines || []).forEach(function (l) { var d = document.createElement('div'); renderInline(d, expand(l)); body.appendChild(d); });
+      $popup.style.left = R.int(30, 58) + '%';
+      $popup.style.top = R.int(22, 48) + '%';
+      $popup.classList.remove('show'); void $popup.offsetWidth; $popup.classList.add('show');
+      var ms = s.ms || 2000;
+      spawn(function () { return sleep(ms).then(function () { $popup.classList.remove('show'); }); });
+      if (s.wait) await sleep(ms);
+    },
+
+    // «очистка терминала»: строки исчезают, внизу процент; в конце экран пуст
+    wipe: async function (s) {
+      var dur = s.ms || 2000, label = expand(s.label || 'Очистка терминала');
+      var ct = addLine('', s.cls || 'red bold');
+      var line = ct.parentNode;
+      var total = $out.childElementCount - 1, el = 0;
+      while (el < dur) {
+        var k = Math.min(1, el / dur);
+        var keep = Math.round(total * (1 - k));
+        while ($out.childElementCount - 1 > keep) $out.removeChild($out.firstElementChild);
+        var f = Math.round(k * 24);
+        setLine(ct, label + '  [' + '█'.repeat(f) + '░'.repeat(24 - f) + '] ' + String(Math.round(k * 100)).padStart(3) + '%');
+        scrollDown();
+        await sleep(50);
+        el += 50;
+      }
+      setLine(ct, label + '  [' + '█'.repeat(24) + '] 100%');
+      await sleep(120);
+      $out.textContent = '';
+      line = null;
+    },
+
     countdown: async function (s) { startCountdown(s.seconds || 30, s.label); },
     waitCountdown: async function () { if (countdownPromise) await countdownPromise; },
 
@@ -432,6 +474,7 @@
     hideBanner();
     $cd.classList.remove('show', 'urgent');
     $final.classList.remove('show');
+    $popup.classList.remove('show');
     document.body.classList.remove('glitching', 'strong');
     $glitch.textContent = '';
     glitchDepth = 0;
