@@ -1,7 +1,7 @@
 /* ==========================================================================
    СЦЕНАРИЙ ТЕРМИНАЛА — редактируйте здесь.
    Весь текст вымышленный, ничего не выполняется.
-   Тайминг: основная часть ~20 c, затем 2 c «очистки терминала», после чего остаётся только финальная строка.
+   Тайминг: ~20 c (включая две паузы по 2 c после DonationAlerts и кошелька); терминал не стирается, последняя строка — session_closed.
    Крупные строки: модификаторы big (крупно), hl / hlg (красная / зелёная рамка), flash (мигнуть 3 раза).
 
    Шаблоны внутри строк (каждый раз генерируются заново):
@@ -88,6 +88,7 @@ window.TERMINAL_SCRIPT = [
     'DonationAlerts Access: [[green bold|granted]]. Токен DonationAlerts получен: [[white|da_{alnum24}]]',
     'Stream key перехвачен: [[white|live_{alnum8}_{alnum20}]]'
   ] },
+  { type: 'wait', ms: 2000 }, // пауза после DonationAlerts
 
   /* ── ФАЗА 3 · файлы, кошелёк, окошко ── */
   { type: 'phase', id: 3, mode: 'alert', prompt: 'root' },
@@ -113,6 +114,7 @@ window.TERMINAL_SCRIPT = [
     'Счёт для вывода сменён на [[red bold|{$wallet}]]',
     'Автовывод: [[red bold|ВКЛЮЧЁН]] · подтверждение по почте: [[red bold|ОТКЛЮЧЕНО]]'
   ] },
+  { type: 'wait', ms: 2000 }, // пауза после смены кошелька
   { type: 'popup', ms: 2000, left: 72, top: 74, title: '⚠ 0x000000F4 :: ??????', lines: [
     '[[red bold|ᚦ̷ ⟊⟒ ꙮ ⌇⟟⟒⟒ ⊑⟒ ⏁⊑⟒⍜ ̸͙ ⍀⍜⍜⋔]]',
     '[[gray|процесс {pid} не отвечает · ты всё ещё здесь?]]'
@@ -123,14 +125,13 @@ window.TERMINAL_SCRIPT = [
     { name: 'browser_cookies.db', size: '1-6M', hot: true },
     { name: 'stream_keys.cfg', size: '200-900B', hot: true },
     { name: 'login.keychain-db', size: '300-900K', hot: true },
-    { name: 'wallet_backup.dat', size: '20-90K', hot: true },
-    { name: 'Desktop/photos.zip', size: '80-400M' }
+    { name: 'wallet_backup.dat', size: '20-90K', hot: true }
   ] },
 
   /* ── ФАЗА 4 · дампы и расшифровка ── */
   { type: 'phase', id: 4, mode: 'alert', prompt: 'root' },
-  { type: 'cmd', text: 'xxd browser_cookies.db | head -32', pre: 120, post: 60 },
-  { type: 'hex', lines: 32, delay: [15, 28], cls: 'red' },
+  { type: 'cmd', text: 'xxd browser_cookies.db | head -24', pre: 120, post: 60 },
+  { type: 'hex', lines: 24, delay: [15, 28], cls: 'red' },
   { type: 'glitch', ms: 400, strong: true },
   { type: 'cmd', text: 'decrypt --aes-256-gcm ./loot/*', pre: 120, post: 80 },
   { type: 'decrypt', duration: 1600, cls: 'white', lines: [
@@ -138,29 +139,17 @@ window.TERMINAL_SCRIPT = [
     'browser_cookies.db → {rand:200-900} сессий',
     'stream_keys.cfg    → live_{alnum8}_{alnum16}'
   ] },
-  { type: 'hashes', count: 14, delay: [15, 30] },
+  { type: 'hashes', count: 10, delay: [15, 30] },
   { type: 'cmd', text: 'upload --all --to {$relay2} --wipe-traces', pre: 120, post: 60 },
   { type: 'progress', label: 'Upload → {$relay2}', duration: 2000, cls: 'red bold' },
-  { type: 'cmd', text: 'tail -n 6 /var/log/auth.log', pre: 120, post: 60 },
-  { type: 'out', delay: [120, 190], cls: 'dim', lines: [
-    '{time} sshd[{pid}]: Accepted publickey for root from {$relay1}',
-    '{time} sudo: root : TTY=pts/3 ; COMMAND=/usr/bin/payout --set-wallet',
-    '{time} sshd[{pid}]: session opened for user streamer',
-    '{time} kernel: [[red|audit: log rotation forced]]',
-    '{time} sshd[{pid}]: Received disconnect from {$relay2}',
-    '{time} [[red|history -c]]'
-  ] },
   { type: 'out', delay: [150, 250], cls: 'red bold', lines: [
     '[!!] Выгрузка на {$relay2} ......... 100%',
     '[!!] Сессии браузера экспортированы'
   ] },
-  { type: 'wait', ms: 150 },
 
-  /* ── ФАЗА 5 · очистка терминала (2 c) и финальная строка ── */
+  /* ── ФАЗА 5 · финальная строка (терминал не стирается) ── */
   { type: 'phase', id: 5, mode: 'alert', prompt: 'root' },
-  { type: 'wipe', ms: 2000, label: 'Очистка терминала' },
-  { type: 'mode', value: 'normal' },
-  { type: 'wait', ms: 100 },
+  { type: 'wait', ms: 300 },
   { type: 'out', cls: 'white bold', lines: ['200 OK | 146_art session_closed'] }
-  // дальше экран просто остаётся с этой строкой
+  // дальше экран просто остаётся как есть, последняя строка — session_closed
 ];
