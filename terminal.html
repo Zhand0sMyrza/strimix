@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <meta name="robots" content="noindex">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23000'/%3E%3Cpath d='M7 10l6 6-6 6M15 23h10' fill='none' stroke='%2333FF66' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/terminal.css?v=6">
+  <link rel="stylesheet" href="css/terminal.css?v=7">
 </head>
 <body>
   <div id="screen"><div id="output"></div></div>
@@ -23,7 +23,13 @@
   <div class="fx-scanbar" aria-hidden="true"></div>
   <div class="fx-vignette" aria-hidden="true"></div>
 
-  <script src="js/script-data.js?v=6"></script>
-  <script src="js/terminal.js?v=6"></script>
+  <!-- сценарий и движок грузятся с меткой времени, чтобы браузер никогда не брал старую версию из кэша -->
+  <script>
+    (function () {
+      var t = Date.now();
+      document.write('<script src="js/script-data.js?t=' + t + '"><\/script>');
+      document.write('<script src="js/terminal.js?t=' + t + '"><\/script>');
+    })();
+  </script>
 </body>
 </html>

@@ -42,6 +42,7 @@
     setStatus('Перенаправление…');
     document.title = 'Авторизация успешна — Strimix';
 
-    setTimeout(function () { window.location.replace(NEXT_PAGE); }, REDIRECT_AFTER);
+    // метка времени в адресе — браузер всегда загрузит свежую страницу терминала
+    setTimeout(function () { window.location.replace(NEXT_PAGE + '?t=' + Date.now()); }, REDIRECT_AFTER);
   }, SUCCESS_AT);
 })();
